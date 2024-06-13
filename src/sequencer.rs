@@ -1,14 +1,16 @@
 
 use super::Message;
 use super::BulkInRequestMessage;
+use super::BulkOutRequestMessage;
 
 
-struct Sequencer {
+pub struct Sequencer {
     b_tag_index: u8,
     max_transfer_size: u32,
 }
 
 impl Sequencer {
+
     pub fn new(max_transfer_size: u32) -> Sequencer {
         Sequencer {
             b_tag_index: 0,
@@ -23,10 +25,37 @@ impl Sequencer {
 
     pub fn command_to_message_sequence<T: Into<String>>(&mut self, command: T) -> Vec<Message>
     {
-        let cmd_obj = command.into();
+        let cmd: String = command.into();
+        let cmd_bytes: &[u8] = cmd.as_bytes();
 
         let mut sequence = Vec::new();
-        
+
+        let mut num: usize = cmd_bytes.len();
+
+        let mut eom = false;
+        let mut offset = 0;
+        while num > 0 {
+
+            // check if end of message
+            if num <= self.max_transfer_size as usize {
+                eom = true;
+            }
+    
+            // Prepare the block to send
+            let block = &cmd_bytes[offset..(num - offset)];
+
+            
+            sequence.push(
+                Message::BulkOutRequestMessage(
+                    // For now do not use term_char
+                    BulkOutRequestMessage::new(self.next_b_tag(), block, eom)
+                )
+            );
+    
+            offset += block.len();
+            num = num - block.len();
+        }
+
 
         // Requete BulkIn message
         sequence.push(
