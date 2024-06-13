@@ -44,6 +44,11 @@ impl Header {
     }
 }
 
+// #[test]
+// fn test_add() {
+//     assert_eq!(add(1, 2), 3);
+// }
+
 // ----------------------------------------------------------------------------
 
 /// USBTMC Device-Dependent Message Out Header
@@ -57,22 +62,27 @@ pub struct DevDepMsgOutHeader {
 /// USBTMC Device-Dependent Message In Header
 /// 
 pub struct DevDepMsgInHeader {
-    transferSize: u32,
-    termChar: Option<u8>,
+    transfer_size: u32,
+    term_char: Option<u8>,
 }
 
 impl DevDepMsgInHeader {
+
+    /// Create a new USBTMC Device-Dependent Message In Header
+    /// 
     pub fn new(transfer_size: u32, term_char: Option<u8>) -> DevDepMsgInHeader {
         DevDepMsgInHeader {
-            transferSize: transfer_size,
-            termChar: term_char,
+            transfer_size,
+            term_char,
         }
     }
 
+    /// Convert to Vec<u8>, to be send over USB
+    /// 
     pub fn to_vec(&self) -> Vec<u8> {
-        //
+        // Create header
         let mut hdr = vec![];
-        hdr.append(&mut little_write_u32(self.transferSize, 4));
+        hdr.append(&mut little_write_u32(self.transfer_size, 4));
 
         // TermCharEnabled.
         // 1 - The Bulk-IN transfer must terminate
@@ -82,9 +92,9 @@ impl DevDepMsgInHeader {
         // TermChar in the GET_CAPABILITIES
         // response packet.
         // 0 - The device must ignore TermChar. 
-        if self.termChar.is_some() {
+        if self.term_char.is_some() {
             hdr.push(0x2);
-            hdr.push(self.termChar.unwrap());
+            hdr.push(self.term_char.unwrap());
         }
         else {
             hdr.push(0x0);
@@ -93,12 +103,12 @@ impl DevDepMsgInHeader {
 
         // Reserved
         hdr.append(&mut vec![0x00; 2]);
-
         hdr
     }
+
 }
 
-/// Write ti u32 in little endian
+/// Write u32 in little endian
 /// 
 fn little_write_u32(size: u32, len: u8) -> Vec<u8> {
     let mut buf = vec![0; len as usize];
