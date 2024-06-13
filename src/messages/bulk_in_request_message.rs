@@ -5,6 +5,8 @@ use crate::DevDepMsgInHeader;
 
 /// USBTMC Device-Dependent Message In Header
 /// 
+/// This message must be send to the device to request a bulk in transfer.
+/// 
 pub struct BulkInRequestMessage {
     header: Header,
     bulk_in_header: DevDepMsgInHeader,
