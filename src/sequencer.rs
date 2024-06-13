@@ -72,3 +72,14 @@ impl Sequencer {
 
 
 
+#[test]
+fn test_simple_sequence() {
+
+    let mut sequencer = Sequencer::new(64);
+
+    let seq = sequencer.command_to_message_sequence("*IDN?");
+
+    assert_eq!( seq.len(), 2 );
+}
+
+

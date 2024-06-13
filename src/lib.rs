@@ -15,4 +15,4 @@ pub use messages::Message;
 pub use messages::BulkInRequestMessage;
 pub use messages::BulkOutRequestMessage;
 
-
+pub use sequencer::Sequencer;

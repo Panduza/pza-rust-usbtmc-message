@@ -1,8 +1,5 @@
 use crate::MsgID;
 
-use byteorder::{ByteOrder, LittleEndian};
-
-
 /// USBTMC Main Header
 /// 
 pub struct Header {
