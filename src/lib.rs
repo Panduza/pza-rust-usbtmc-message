@@ -12,6 +12,7 @@ pub use headers::DevDepMsgInHeader;
 pub use headers::DevDepMsgOutHeader;
 
 pub use messages::Message;
+pub use messages::BulkInMessage;
 pub use messages::BulkInRequestMessage;
 pub use messages::BulkOutRequestMessage;
 

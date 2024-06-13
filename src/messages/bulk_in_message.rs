@@ -1,7 +1,5 @@
-use crate::MsgID;
 use crate::Header;
 use crate::DevDepMsgInHeader;
-
 
 /// USBTMC Device-Dependent Message In Header
 /// 
@@ -9,13 +7,12 @@ use crate::DevDepMsgInHeader;
 /// 
 pub struct BulkInMessage {
     /// Header
-    header: Header,
+    pub header: Header,
     /// USBTMC Device-Dependent Message In Header
-    bulk_in_header: DevDepMsgInHeader,
+    pub bulk_in_header: DevDepMsgInHeader,
     /// Payload
-    payload: Vec<u8>,
+    pub payload: Vec<u8>,
 }
-
 
 impl BulkInMessage {
 

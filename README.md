@@ -6,7 +6,14 @@ This crate provides only the way to compose and decode USBtmc messages.
 You need a USB lib to communicate with your device.
 This crate is for developpers who want to create their own USBtmc crate with their own USB lib (like us in Panduza).
 
-## Specification
+
+## Usage
+
+```rust
+
+```
+
+## Specifications
 
 `This crate does not currently implement every aspect of the specification`
 
