@@ -25,12 +25,15 @@ impl Header {
         vec![self.msg_id as u8, self.b_tag, self.b_tag_inverse, 0x00]
     }
 
-    pub fn from_u8(data: &[u8]) -> Result<Header, String> {
+    /// Convert from u8 array
+    /// 
+    pub fn from_u8_array(data: &[u8]) -> Result<Header, String> {
+        // Check if data is long enough
         if data.len() < 4 {
-            return Err("Header must be 4 bytes long".to_string());
+            return Err( format!("Header must be 4 bytes long (provided={})", data.len()) );
         }
 
-        let m_id = MsgID::from_u8(data[0])
+        let m_id = MsgID::from_u8_array(data[0])
             .ok_or(format!("Invalid MsgID '{}'", data[0]).as_str() )?;
 
         Ok(Header {

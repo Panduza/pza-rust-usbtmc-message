@@ -48,7 +48,7 @@ impl DevDepMsgInHeader {
     }
 
 
-    pub fn from_u8(data: &[u8]) -> DevDepMsgInHeader {
+    pub fn from_u8_array(data: &[u8]) -> DevDepMsgInHeader {
         DevDepMsgInHeader {
             transfer_size : 0,
             term_char: None,

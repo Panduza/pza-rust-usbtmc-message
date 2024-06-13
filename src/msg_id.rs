@@ -19,7 +19,7 @@ impl MsgID {
     pub const VENDOR_SPECIFIC_IN: MsgID = MsgID::VendorSpecificIn;
 
 
-    pub fn from_u8(value: u8) -> Option<MsgID> {
+    pub fn from_u8_array(value: u8) -> Option<MsgID> {
         match value {
             1 => Some(MsgID::DevDepMsgOut),
             2 => Some(MsgID::DevDepMsgIn),
