@@ -2,6 +2,7 @@
 name = "usbtmc-message"
 description = "Helper to create and parse USBMC messages"
 readme = "README.md"
+version = "0.1.0"
 
 [dependencies]
 
