@@ -1,10 +1,13 @@
 use byteorder::{ByteOrder, LittleEndian};
 
+use crate::logger::Logger;
+
 /// USBTMC Device-Dependent Message In Header
 /// 
 pub struct DevDepMsgInHeader {
     transfer_size: u32,
     term_char: Option<u8>,
+    eom: bool,
 }
 
 impl DevDepMsgInHeader {
@@ -15,6 +18,7 @@ impl DevDepMsgInHeader {
         DevDepMsgInHeader {
             transfer_size,
             term_char,
+            eom: false,
         }
     }
 
@@ -49,10 +53,33 @@ impl DevDepMsgInHeader {
 
 
     pub fn from_u8_array(data: &[u8]) -> DevDepMsgInHeader {
+        //
+        // Create trace logger
+        let logger = Logger::new_for_crate();
+        logger.trace(format!("DevDepMsgInHeader::from_u8_array({:?})", data));
+        
+        // if data.len()
+
+        // Transfer size
         DevDepMsgInHeader {
-            transfer_size : 0,
+            transfer_size : little_read_u32(&data[0..4]),
             term_char: None,
+            eom: if data[4] & 0x1 == 0x1 { true } else { false },
         }
+    }
+
+    /// Getter for the transfer size
+    /// 
+    pub fn transfer_size(&self) -> u32 {
+        self.transfer_size
+    }
+
+    /// Getter for the EOM signal
+    /// 
+    /// No other message after this one
+    /// 
+    pub fn is_eom(&self) -> bool {
+        self.eom
     }
 
 }
@@ -65,4 +92,8 @@ fn little_write_u32(size: u32, len: u8) -> Vec<u8> {
     buf
 }
 
-
+/// Read u32 in little endian
+/// 
+fn little_read_u32(data: &[u8]) -> u32 {
+    LittleEndian::read_u32(data)
+}

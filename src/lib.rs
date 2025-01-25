@@ -4,6 +4,7 @@ mod msg_id;
 mod headers;
 mod messages;
 mod sequencer;
+mod logger;
 
 pub use msg_id::MsgID;
 
