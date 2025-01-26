@@ -16,7 +16,7 @@ impl BulkInRequestMessage {
     pub fn new(b_tag: u8, transfer_size: u32, term_char: Option<u8>) -> BulkInRequestMessage {
         BulkInRequestMessage {
             header: Header::new(MsgID::DevDepMsgIn, b_tag),
-            bulk_in_header: DevDepMsgInHeader::new(transfer_size, term_char),
+            bulk_in_header: DevDepMsgInHeader::new(512*32, term_char),
         }
     }
 

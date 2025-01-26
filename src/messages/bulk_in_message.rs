@@ -1,3 +1,4 @@
+use crate::logger::Logger;
 use crate::DevDepMsgInHeader;
 use crate::Header;
 
@@ -22,11 +23,24 @@ impl BulkInMessage {
             .take_while(|c| **c != b'\n' && **c != b'\r')
             .count();
 
-        let payload_array = &data[12..payload_size + 12];
+        
+
+        //
+        // Create trace logger
+        let logger = Logger::new_for_crate();
+        logger.trace(format!("!! payload_size={:?}", payload_size));
+        
+        
+        let bulk_in_header = DevDepMsgInHeader::from_u8_array(&data[4..11]);
+        logger.trace(format!("!! transfer_size={:?}", bulk_in_header.transfer_size()));
+        
+
+        let payload_sizeee = bulk_in_header.transfer_size() as usize + 12;
+        let payload_array = &data[12..payload_sizeee];
 
         BulkInMessage {
             header: Header::from_u8_array(&data[0..4]).unwrap(),
-            bulk_in_header: DevDepMsgInHeader::from_u8_array(&data[4..11]),
+            bulk_in_header: bulk_in_header,
             payload: payload_array.to_vec(),
         }
     }
