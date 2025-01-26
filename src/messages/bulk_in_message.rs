@@ -43,10 +43,15 @@ impl BulkInMessage {
         &self.payload
     }
 
-    ///
+    /// Convert the payload to a string
+    /// 
+    /// Manage errors by return an error string
     ///
     pub fn payload_as_string(&self) -> String {
-        String::from_utf8(self.payload.clone()).unwrap()
+        match String::from_utf8(self.payload.clone()) {
+            Ok(s) => s,
+            Err(_) => "Cannot convert the payload in to string".to_string(),
+        }
     }
 }
 
